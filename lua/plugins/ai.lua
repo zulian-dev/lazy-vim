@@ -1,5 +1,28 @@
 return {
-  { 'github/copilot.vim' },
+  { 
+    'github/copilot.vim', 
+    -- 'zbirenbaum/copilot.lua',
+    config = function()
+      vim.api.nvim_set_keymap('i', '<c-p>', '<Plug>(copilot-panel)', { noremap = true, silent = true })
+      vim.keymap.set('n', '<Leader>cs', '<cmd>Copilot status<CR>', { desc = 'Copilot status' })
+    end,  
+  },
+  
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      -- { "zbirenbaum/copilot.lua" }, -- or 
+      { "github/copilot.vim" }, 
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
+  
   --  {
   --    'codota/tabnine-nvim',
   --    build = "./dl_binaries.sh",
