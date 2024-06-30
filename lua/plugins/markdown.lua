@@ -1,14 +1,21 @@
 return {
-  -- { "mateusbraga/vim-spell-pt-br" }, -- ~/.local/share/nvim/lazy/vim-spell-pt-br/spell/pt.utf-8.spl
-  -- { "preservim/vim-markdown" },
   {
+    "dense-analysis/ale",
+    ft = { "markdown" },
+    config = function()
+      vim.g.ale_fix_on_save = 1
+      vim.g.ale_fixers = {
+        markdown = { 'pandoc' }
+      }
+      vim.api.nvim_set_keymap('n', '<Leader>p', ':ALEFix<CR>', {})
+    end
+  },{
     "junegunn/vim-emoji",
     ft = { "markdown" },
     config = function()
       vim.cmd("set completefunc=emoji#complete")
     end,
-  },
-  {
+  },{
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
