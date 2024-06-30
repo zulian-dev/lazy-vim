@@ -56,5 +56,5 @@ return {
   { 'morhetz/gruvbox',                  name = 'gruvbox light soft',       colorscheme = 'gruvbox-material-light' },
   
   -- my test
-  {"zulian-dev/test-nvim-theme", name = "test-nvim-theme", colorscheme = "test-nvim-theme"},
+  {"zulian-dev/theme-sedona.vim",       name = "sedona",                   colorscheme = "sedona"},
 }
