@@ -14,4 +14,4 @@ local function time_background()
     -- if vim.o.bg ~= bg then vim.o.bg = bg end
   end))
 end
-time_background()
+-- time_background()
