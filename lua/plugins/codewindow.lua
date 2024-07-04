@@ -27,6 +27,5 @@ return {
       },
     })
     codewindow.apply_default_keybinds()
-    		vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle left<CR>", {})
   end,
 }
