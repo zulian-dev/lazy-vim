@@ -1,4 +1,4 @@
-require("config.vim-options")
-require("config.lazy")
 require("config.cron")
-
+require("config.lazy")
+require("config.options")
+require("config.mappings")
