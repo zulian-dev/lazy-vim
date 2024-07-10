@@ -1,11 +1,12 @@
 return {
   "zaldih/themery.nvim",
-  livePreview = true,
+  lazyLoad = true,
   config = function()
-    require('config.theme')
     require("themery").setup({
+      livePreview = true,
       themes = require("plugins.themes"),
       themeConfigFile = "~/.config/nvim/lua/config/theme.lua"
     })
+    require('config.theme')
   end,
 }

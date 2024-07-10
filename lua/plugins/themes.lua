@@ -6,12 +6,34 @@ local tokyonight_setup = function()
   require("tokyonight").setup()
 end
 
+local after = [[
+  require("catppuccin").setup()
+]]
+
+local after_light_theme = [[
+  vim.cmd("set background=light")
+]]
+
 return {
+  
+  {"maxmx03/fluoromachine.nvim", name = "fluoromachine",                               colorscheme = "fluoromachine" },
+  {"glitchcandy/glitchcandy-nvim", name = "glitchcandy",                               colorscheme = "glitchcandy" },
+  -- {"liminalminds/icecream.nvim", name = "icecream",                               colorscheme = "icecream" },
+  {"Gako358/borealis.nvim", name = "borealis",                               colorscheme = "borealis" },
+  {"AmberLehmann/candyland.nvim", name = "candyland",                               colorscheme = "candyland" },
+  {"hachy/eva01.vim", name = "eva01",                               colorscheme = "eva01" },
+  {"hachy/eva01.vim", name = "eva01-LCL",                               colorscheme = "eva01-LCL" },
+  
+  
+  
+  
+  -- Aurora
+  { "ray-x/aurora",                     name = "Aurora",                               colorscheme = "aurora" },
 
   -- Catppuccin
-  { "catppuccin/nvim",                  name = "Catppuccin - Frappe",                  colorscheme = "catppuccin-frappe",         config = catppuccin_setup },
-  { "catppuccin/nvim",                  name = "Catppuccin - Macchiato",               colorscheme = "catppuccin-macchiato",      config = catppuccin_setup },
-  { "catppuccin/nvim",                  name = "Catppuccin - Mocha",                   colorscheme = "catppuccin-mocha",          config = catppuccin_setup },
+  { "catppuccin/nvim",                  name = "Catppuccin - Frappe",                  colorscheme = "catppuccin-frappe",          after = after },
+  { "catppuccin/nvim",                  name = "Catppuccin - Macchiato",               colorscheme = "catppuccin-macchiato",       after = after },
+  { "catppuccin/nvim",                  name = "Catppuccin - Mocha",                   colorscheme = "catppuccin-mocha",           after = after },
 
   -- Onedarkpro
   { "olimorris/onedarkpro.nvim",        name = "OnedarkPro",                           colorscheme = "onedark" },
@@ -62,9 +84,9 @@ return {
   { "tiagovla/tokyodark.nvim",          name = "Tokyo Dark",                           colorscheme = "tokyodark" },
 
   -- tokyonight
-  { "folke/tokyonight.nvim",            name = "Tokyonight - Night",                   colorscheme = "tokyonight-night",          config = tokyonight_setup },
-  { "folke/tokyonight.nvim",            name = "Tokyonight - Storm",                   colorscheme = "tokyonight-storm",          config = tokyonight_setup },
-  { "folke/tokyonight.nvim",            name = "Tokyonight - Moon",                    colorscheme = "tokyonight-moon",           config = tokyonight_setup },
+  { "folke/tokyonight.nvim",            name = "Tokyonight - Night",                   colorscheme = "tokyonight-night",           config = tokyonight_setup },
+  { "folke/tokyonight.nvim",            name = "Tokyonight - Storm",                   colorscheme = "tokyonight-storm",           config = tokyonight_setup },
+  { "folke/tokyonight.nvim",            name = "Tokyonight - Moon",                    colorscheme = "tokyonight-moon",            config = tokyonight_setup },
 
   -- Kanagawa
   { "rebelot/kanagawa.nvim",            name = "Kanagawa - Wave",                      colorscheme = "kanagawa-wave" },
@@ -72,6 +94,9 @@ return {
 
   -- monokai
   { "crusoexia/vim-monokai",            name = "Monokai",                              colorscheme = "monokai" },
+
+  -- vim-one
+  { "rakr/vim-one",                     name = "One",                                  colorscheme = "one" },
 
   -- monokai pro
   { "loctvl842/monokai-pro.nvim",       name = "Monokai - Pro",                        colorscheme = "monokai-pro" },
@@ -81,6 +106,9 @@ return {
   { "loctvl842/monokai-pro.nvim",       name = "Monokai - Octagon",                    colorscheme = "monokai-pro-octagon" },
   { "loctvl842/monokai-pro.nvim",       name = "Monokai - Ristretto",                  colorscheme = "monokai-pro-ristretto" },
   { "loctvl842/monokai-pro.nvim",       name = "Monokai - Spectrum",                   colorscheme = "monokai-pro-spectrum" },
+
+  -- space-vim-dark
+  { "liuchengxu/space-vim-dark",        name = "Space Vim - Dark",                     colorscheme = "space-vim-dark" },
 
   -- iceberg
   { "cocopon/iceberg.vim",              name = "Iceberg",                              colorscheme = "iceberg" },
@@ -119,28 +147,28 @@ return {
   { "scottmckendry/cyberdream.nvim",    name = "Cyberdream",                           colorscheme = "cyberdream" },
 
   -- Bluloco
-  { 'uloco/bluloco.nvim',               name = "Bluloco",                              colorscheme = "bluloco",                   dependencies = { 'rktjmp/lush.nvim' } },
-  { 'uloco/bluloco.nvim',               name = "Bluloco - Dark",                       colorscheme = "bluloco-dark",              dependencies = { 'rktjmp/lush.nvim' } },
+  { 'uloco/bluloco.nvim',               name = "Bluloco",                              colorscheme = "bluloco",                    dependencies = { 'rktjmp/lush.nvim' } },
+  { 'uloco/bluloco.nvim',               name = "Bluloco - Dark",                       colorscheme = "bluloco-dark",               dependencies = { 'rktjmp/lush.nvim' } },
 
   -- Biscuit
   { "Biscuit-Theme/nvim",               name = "Biscuit",                              colorscheme = "biscuit" },
 
 
   ------------------------
-
-  { "catppuccin/nvim",                  name = "(LIGHT) Catppuccin - Latte",           colorscheme = "catppuccin-latte",          config = catppuccin_setup },
-  { "olimorris/onedarkpro.nvim",        name = "(LIGHT) OnedarkPro - Onelight",        colorscheme = "onelight" },
-  { "EdenEast/nightfox.nvim",           name = "(LIGHT) Nightfox Dawnfox",             colorscheme = "dawnfox" },
-  { "EdenEast/nightfox.nvim",           name = "(LIGHT) Nightfox Dayfox",              colorscheme = "dayfox" },
-  { "rose-pine/neovim",                 name = "(LIGHT) Rose Pine",                    colorscheme = "rose-pine" },
-  { "rose-pine/neovim",                 name = "(LIGHT) Rose Pine Dawn",               colorscheme = "rose-pine-dawn" },
-  { "folke/tokyonight.nvim",            name = "(LIGHT) Tokyonight day",               colorscheme = "tokyonight-day",            config = tokyonight_setup },
-  { "rebelot/kanagawa.nvim",            name = "(LIGHT) Kanagawa Lotus",               colorscheme = "kanagawa-lotus" },
-  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light",               colorscheme = "github_light" },
-  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light Colorblind",    colorscheme = "github_light_colorblind" },
-  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light Default",       colorscheme = "github_light_default" },
-  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light High contrast", colorscheme = "github_light_high_contrast" },
-  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light Tritanopia",    colorscheme = "github_light_tritanopia" },
-  { 'uloco/bluloco.nvim',               name = "(LIGHT) Bluloco - Light",              colorscheme = "bluloco-light",             dependencies = { 'rktjmp/lush.nvim' } },
+  { "NLKNguyen/papercolor-theme",       name = "(LIGHT) Paper Color",                  colorscheme = "PaperColor",                 after = after_light_theme },
+  { "catppuccin/nvim",                  name = "(LIGHT) Catppuccin - Latte",           colorscheme = "catppuccin-latte",           after = after_light_theme,            config = catppuccin_setup },
+  { "olimorris/onedarkpro.nvim",        name = "(LIGHT) OnedarkPro - Onelight",        colorscheme = "onelight",                   after = after_light_theme },
+  { "EdenEast/nightfox.nvim",           name = "(LIGHT) Nightfox Dawnfox",             colorscheme = "dawnfox",                    after = after_light_theme },
+  { "EdenEast/nightfox.nvim",           name = "(LIGHT) Nightfox Dayfox",              colorscheme = "dayfox",                     after = after_light_theme },
+  { "rose-pine/neovim",                 name = "(LIGHT) Rose Pine",                    colorscheme = "rose-pine",                  after = after_light_theme },
+  { "rose-pine/neovim",                 name = "(LIGHT) Rose Pine Dawn",               colorscheme = "rose-pine-dawn",             after = after_light_theme },
+  { "folke/tokyonight.nvim",            name = "(LIGHT) Tokyonight day",               colorscheme = "tokyonight-day",             after = after_light_theme,            config = tokyonight_setup },
+  { "rebelot/kanagawa.nvim",            name = "(LIGHT) Kanagawa Lotus",               colorscheme = "kanagawa-lotus",             after = after_light_theme, },
+  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light",               colorscheme = "github_light",               after = after_light_theme },
+  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light Colorblind",    colorscheme = "github_light_colorblind",    after = after_light_theme },
+  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light Default",       colorscheme = "github_light_default",       after = after_light_theme },
+  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light High contrast", colorscheme = "github_light_high_contrast", after = after_light_theme },
+  { "projekt0n/github-nvim-theme",      name = "(LIGHT) Github - Light Tritanopia",    colorscheme = "github_light_tritanopia",    after = after_light_theme },
+  { 'uloco/bluloco.nvim',               name = "(LIGHT) Bluloco - Light",              colorscheme = "bluloco-light",              after = after_light_theme,            dependencies = { 'rktjmp/lush.nvim' } },
 
 }
