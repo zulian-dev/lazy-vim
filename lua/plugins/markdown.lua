@@ -1,3 +1,12 @@
+--  Enable spell check
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {"md", "markdown", "txt", "text"},
+  callback = function()
+    vim.cmd([[ set nospell ]])
+    vim.cmd([[ set spelllang=pt ]])
+  end
+})
+
 return {
   {
     "dense-analysis/ale",
@@ -22,3 +31,4 @@ return {
     build = function() vim.fn["mkdp#util#install"]() end,
   }
 }
+  
