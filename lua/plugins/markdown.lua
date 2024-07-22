@@ -4,6 +4,9 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.cmd([[ set nospell ]])
     vim.cmd([[ set spelllang=pt ]])
+    -- local project_folder = vim.fn.expand("%:p:h") .. "/.pt.utf-8.add"
+    print(vim.fn.stdpath("config") .. "/spell/spellfile.utf-8.add")
+    vim.opt_local.spellfile = vim.fn.stdpath("config") .. "/spell/spellfile.utf-8.add"
   end
 })
 
