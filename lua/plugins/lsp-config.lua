@@ -1,7 +1,33 @@
+local enable_snyk_languages = {
+	"go",
+	"java",
+	"javascript",
+	"elixir",
+}
+
+local enable_solar_languages = {
+	-- "php",
+	-- "python",
+	"html",
+	"go",
+	"javascript",
+	"java",
+	"json",
+}	
+
+
 return {
-	{
-		"elixir-editors/vim-elixir",
+	-- { "elixir-editors/vim-elixir" },
+	{ 
+		"schrieveslaach/sonarlint.nvim",
+		url = "https://gitlab.com/schrieveslaach/sonarlint.nvim",
+		lazy = true,
+		dependencies = {
+			"mfussenegger/nvim-jdtls",
+		},
+		ft = enable_solar_languages,
 	},
+	
 	{
 		"williamboman/mason.nvim",
 		lazy = false,
@@ -13,12 +39,20 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		lazy = false,
 		ensure_installed = {
-			"html",
 			"lua_ls",
 			"elixirls",
 			"gopls",
 			"rust_analyzer",
 			"clojure_lsp",
+			
+			-- Javascript
+			"typescript-language-server",
+			"html",
+
+			
+			-- JAVA
+			"jdtls",
+			"sonarlint-language-server",
 		},
 		opts = {
 			auto_install = true,
@@ -30,7 +64,24 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local function on_attach(_, bufnr)
+			local function on_attach(client, bufnr)
+				
+				local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+				--if client.supports_method("textDocument/formatting") then
+					vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+					vim.api.nvim_create_autocmd("BufWritePre", {
+							group = augroup,
+							buffer = bufnr,
+							callback = function()
+									-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+									-- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+									
+									--vim.lsp.buf.formatting_sync()
+									vim.lsp.buf.format({ async = false })
+							end,
+					})
+				-- end
+
 				-- Enable completion triggered by <c-x><c-o>
 				-- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -75,12 +126,24 @@ return {
 				on_attach = on_attach,
 				filetypes = { "lua" },
 			})
+			-- 	lspconfig.nextls.setup({
+			-- 		capabilities = capabilities,
+			-- 		on_attach = on_attach,
+			-- 		cmd = { "~/.cache/elixir-tools/nextls/bin/nextls" },
+			-- 		filetypes = { "elixir" },
+			-- 	})
 			lspconfig.elixirls.setup({
+				cmd = { vim.fn.expand("$MASON/bin/elixir-ls") },
 				capabilities = capabilities,
 				on_attach = on_attach,
-				cmd = { "/opt/homebrew/bin/elixir-ls" },
 				filetypes = { "elixir" },
 			})
+			-- lspconfig.elixirls.setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	cmd = { "/opt/homebrew/Cellar/elixir-ls/0.21.3/libexec/language_server.sh" },
+			-- 	filetypes = { "elixir" },
+			-- })
 			lspconfig.gopls.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
@@ -100,11 +163,65 @@ return {
 				-- 	vim.keymap.set("n", "<leader>fm", "<cmd>lua vim.lsp.buf.format()<CR>", { noremap = true })
 				-- end,
 			})
-			-- lspconfig.cljfmt.setup({
-			-- capabilities = capabilities,
-			-- filetypes = { "clojure", "clojurescript" },
-			--})
+			
+			lspconfig.snyk_ls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = enable_snyk_languages,
+			})
+			
+			
+-- local snyk_token = os.getenv('SNYK_TOKEN')
+-- if snyk_token and #snyk_token > 0 then
+-- 	lspconfig.snyk_ls.setup {
+-- 		init_options = {
+-- 			integrationName = 'nvim',
+-- 			token = snyk_token,
+-- 			activateSnykCodeQuality = 'true',
+-- 			trustedFolders = {
+-- 				uv.os_homedir() .. '/.config',
+-- 				uv.os_homedir() .. '/.local',
+-- 				uv.os_homedir() .. '/projects',
+-- 				uv.os_homedir() .. '/programming',
+-- 			},
+-- 		}
+-- 	}
+-- end
 
+			-- Java
+			lspconfig.jdtls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = { "java" }
+			})
+
+			
+			
+			require('sonarlint').setup({
+        server = {
+          cmd = {
+              "sonarlint-language-server", 
+              -- Ensure that sonarlint-language-server uses stdio channel
+              '-stdio',
+              '-analyzers',
+              -- paths to the analyzers you need, using those for python and java in this example
+              -- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
+              -- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
+							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
+							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar"),
+							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
+							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarxml.jar"),
+							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
+							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"), -- docker, k8s, terraform
+							}
+        },
+				filetypes = enable_solar_languages,
+			})
+			
+			
+			
+			
+			
 			-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			-- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
 			-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
