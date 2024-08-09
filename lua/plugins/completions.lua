@@ -1,44 +1,93 @@
-return {
-  {
-    "hrsh7th/cmp-nvim-lsp"
-  },
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = {
-      "saadparwaiz1/cmp_luasnip",
-      "rafamadriz/friendly-snippets",
-    },
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    config = function()
-      local cmp = require("cmp")
-      require("luasnip.loaders.from_vscode").lazy_load()
+local icons = {
+	Text = "󰉿",
+	Variable = "󰜢",
+	Snippet = "",
+	Function = "󰊕",
+	Keyword = "󰌋",
+	Field = "",
+	Property = "",
+	Enum = "",
+	Method = "",
+	Class = "",
+	Struct = "פּ",
+	Interface = "ﰮ",
+	Module = "",
+	Unit = "塞",
+	Value = "",
+	Constant = "",
+	EnumMember = "",
+	Reference = "",
+	File = "",
+	Folder = "",
+}
+local function border(hl_name)
+	return {
+		{ "╭", hl_name },
+		{ "─", hl_name },
+		{ "╮", hl_name },
+		{ "│", hl_name },
+		{ "╯", hl_name },
+		{ "─", hl_name },
+		{ "╰", hl_name },
+		{ "│", hl_name },
+	}
+end
 
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" }, -- For luasnip users.
-        }, {
-          { name = "buffer" },
-        }),
-      })
-    end,
-  },
+return {
+	{
+		"hrsh7th/cmp-nvim-lsp",
+	},
+	{
+		"L3MON4D3/LuaSnip",
+		dependencies = {
+			"saadparwaiz1/cmp_luasnip",
+			"rafamadriz/friendly-snippets",
+		},
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		config = function()
+			local cmp = require("cmp")
+			require("luasnip.loaders.from_vscode").lazy_load()
+
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						require("luasnip").lsp_expand(args.body)
+					end,
+				},
+
+				window = {
+					completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
+				},
+
+				mapping = cmp.mapping.preset.insert({
+					["<C-b>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.abort(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
+				}),
+
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" }, -- For luasnip users.
+				}, {
+					{ name = "buffer" },
+				}),
+
+				formatting = {
+					expandable_indicator = true,
+					fields = { "abbr", "kind" },
+					format = function(_, vim_item)
+						if icons[vim_item.kind] then
+							vim_item.kind = icons[vim_item.kind] .. " " .. vim_item.kind or vim_item.kind
+						end
+						return vim_item
+					end,
+				},
+			})
+		end,
+	},
 }
