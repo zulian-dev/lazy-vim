@@ -78,7 +78,7 @@ return {
   { "connorholyday/vim-snazzy",         name = "Snazzy",                               colorscheme = "snazzy" },
 
   -- hardhacker
-  { "hardhackerlabs/theme-vim",         name = "Hardhacker",                           colorscheme = "hardhacker" },
+  -- { "hardhackerlabs/theme-vim",         name = "Hardhacker",                           colorscheme = "hardhacker" },
 
   -- TokyoDark
   { "tiagovla/tokyodark.nvim",          name = "Tokyo Dark",                           colorscheme = "tokyodark" },

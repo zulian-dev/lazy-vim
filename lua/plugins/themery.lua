@@ -5,8 +5,6 @@ return {
 		require("themery").setup({
 			livePreview = true,
 			themes = require("plugins.themes"),
-			themeConfigFile = "~/.config/nvim/lua/config/theme.lua",
 		})
-		require("config.theme")
 	end,
 }
