@@ -8,20 +8,20 @@ return {
     end,  
   },
   
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
-    dependencies = {
-      -- { "zbirenbaum/copilot.lua" }, -- or 
-      { "github/copilot.vim" }, 
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-    },
-    opts = {
-      debug = true, -- Enable debugging
-      -- See Configuration section for rest
-    },
-    -- See Commands section for default commands if you want to lazy load on them
-  },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   branch = "canary",
+  --   dependencies = {
+  --     -- { "zbirenbaum/copilot.lua" }, -- or 
+  --     { "github/copilot.vim" }, 
+  --     { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+  --   },
+  --   opts = {
+  --     debug = true, -- Enable debugging
+  --     -- See Configuration section for rest
+  --   },
+  --   -- See Commands section for default commands if you want to lazy load on them
+  -- },
   
   --  {
   --    'codota/tabnine-nvim',
@@ -38,21 +38,41 @@ return {
   --      })
   --    end
   --  },
-  -- {
-  --   "jackMort/ChatGPT.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("chatgpt").setup({
-  --       -- async_api_key_cmd = "pass show api/tokens/openapi"
-  --       api_key_cmd = "echo '???'"
-  --     })
-  --   end,
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "folke/trouble.nvim",
-  --     "nvim-telescope/telescope.nvim"
-  --   }
-  -- },
+  {
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("chatgpt").setup({
+        api_key_cmd = 'op read op://Personal/OpenAI/API-KEY',  
+      })
+      
+      local wk = require("which-key")
+      wk.add({
+          { "c", group = "ChatGPT" },
+          { "cc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
+          {
+            mode = { "n", "v" },
+            { "ca", "<cmd>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
+            { "cd", "<cmd>ChatGPTRun docstring<CR>", desc = "Docstring" },
+            { "ce", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
+            { "cf", "<cmd>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
+            { "cg", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
+            { "ck", "<cmd>ChatGPTRun keywords<CR>", desc = "Keywords" },
+            { "cl", "<cmd>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
+            { "co", "<cmd>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
+            { "cr", "<cmd>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
+            { "cs", "<cmd>ChatGPTRun summarize<CR>", desc = "Summarize" },
+            { "ct", "<cmd>ChatGPTRun translate<CR>", desc = "Translate" },
+            { "cx", "<cmd>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
+          },
+        })
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "folke/trouble.nvim",
+      "nvim-telescope/telescope.nvim"
+    },
+  }
 }
 
