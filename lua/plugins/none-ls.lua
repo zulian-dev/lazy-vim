@@ -2,22 +2,34 @@ return {
 	"nvimtools/none-ls.nvim",
 	config = function()
 		local null_ls = require("null-ls")
+		local formatting = null_ls.builtins.formatting
+		local diagnostics = null_ls.builtins.diagnostics
+		local code_actions = null_ls.builtins.code_actions
+
 		null_ls.setup({
 			sources = {
 				-- Lua
-				null_ls.builtins.formatting.stylua,
+				formatting.stylua,
 
 				-- Elixir
-				null_ls.builtins.diagnostics.credo,
+				diagnostics.credo,
 
 				-- Go
-				-- null_ls.builtins.formatting.gofmt,
-				null_ls.builtins.diagnostics.staticcheck,
-
-				-- Java
-				-- null_ls.builtins.diagnostics.jdtls,
-
-				-- null_ls.builtins.diagnostics.eslint.with({
+				-- formatting.gofmt,
+				diagnostics.staticcheck,
+				
+				code_actions.gitsigns,
+				
+				-- markdown
+				formatting.markdownlint,
+				diagnostics.markdownlint.with({
+					filetypes = { "markdown" },
+					extra_args = { 
+						-- "--disable", "MD030"
+					},
+				}),
+				
+				-- diagnostics.eslint.with({
 				-- 	condition = function(utils)
 				-- 		return utils.root_has_file("package.json")
 				-- 	end,

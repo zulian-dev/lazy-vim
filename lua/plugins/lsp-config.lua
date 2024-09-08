@@ -13,12 +13,11 @@ local enable_solar_languages = {
 	"javascript",
 	"java",
 	"json",
-}	
-
+}
 
 return {
 	-- { "elixir-editors/vim-elixir" },
-	{ 
+	{
 		"schrieveslaach/sonarlint.nvim",
 		url = "https://gitlab.com/schrieveslaach/sonarlint.nvim",
 		lazy = true,
@@ -27,12 +26,21 @@ return {
 		},
 		ft = enable_solar_languages,
 	},
-	
+
 	{
 		"williamboman/mason.nvim",
 		lazy = false,
 		config = function()
-			require("mason").setup()
+			require("mason").setup({
+				ui = {
+					icons = {
+						package_installed = "✓",
+						package_pending = "➜",
+						package_uninstalled = "✗",
+					},
+				},
+			})
+	
 		end,
 	},
 	{
@@ -44,12 +52,11 @@ return {
 			"gopls",
 			"rust_analyzer",
 			"clojure_lsp",
-			
+
 			-- Javascript
 			"typescript-language-server",
 			"html",
 
-			
 			-- JAVA
 			"jdtls",
 			"sonarlint-language-server",
@@ -65,21 +72,20 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local function on_attach(client, bufnr)
-				
 				local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 				--if client.supports_method("textDocument/formatting") then
-					vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-					vim.api.nvim_create_autocmd("BufWritePre", {
-							group = augroup,
-							buffer = bufnr,
-							callback = function()
-									-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-									-- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
-									
-									--vim.lsp.buf.formatting_sync()
-									vim.lsp.buf.format({ async = false })
-							end,
-					})
+				vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					group = augroup,
+					buffer = bufnr,
+					callback = function()
+						-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+						-- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+
+						--vim.lsp.buf.formatting_sync()
+						vim.lsp.buf.format({ async = false })
+					end,
+				})
 				-- end
 
 				-- Enable completion triggered by <c-x><c-o>
@@ -88,9 +94,9 @@ return {
 				-- Mappings.
 				-- See `:help vim.lsp.*` for documentation on any of the below functions
 				local bufopts = { noremap = true, silent = true, buffer = bufnr }
-				-- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-				-- vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-				-- vim.keymap.set("n", "gK", vim.lsp.buf.hover, bufopts)
+				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
+				vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
+				vim.keymap.set("n", "gK", vim.lsp.buf.hover, bufopts)
 				-- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
 				-- vim.keymap.set("n", "gS", vim.lsp.buf.signature_help, bufopts)
 				-- vim.keymap.set("n", "rn", vim.lsp.buf.rename, bufopts)
@@ -102,7 +108,7 @@ return {
 				-- vim.keymap.set("n", "gtd", vim.lsp.buf.type_definition, bufopts)
 				-- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
 				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
-				vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, bufopts)
+				-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, bufopts)
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
 				vim.keymap.set("n", "<leader>lr", ":Telescope lsp_references", bufopts)
 				vim.keymap.set("n", "<leader>fm", function()
@@ -163,65 +169,194 @@ return {
 				-- 	vim.keymap.set("n", "<leader>fm", "<cmd>lua vim.lsp.buf.format()<CR>", { noremap = true })
 				-- end,
 			})
-			
+
 			lspconfig.snyk_ls.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
 				filetypes = enable_snyk_languages,
 			})
 			
+			-- -- markdown
+			-- lspconfig.marksman.setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- })
 			
--- local snyk_token = os.getenv('SNYK_TOKEN')
--- if snyk_token and #snyk_token > 0 then
--- 	lspconfig.snyk_ls.setup {
--- 		init_options = {
--- 			integrationName = 'nvim',
--- 			token = snyk_token,
--- 			activateSnykCodeQuality = 'true',
--- 			trustedFolders = {
--- 				uv.os_homedir() .. '/.config',
--- 				uv.os_homedir() .. '/.local',
--- 				uv.os_homedir() .. '/projects',
--- 				uv.os_homedir() .. '/programming',
--- 			},
--- 		}
--- 	}
--- end
+			-- markdown
+			-- lspconfig.markdownlint.setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- })
+			
+			
+			local words = {}
+			
+			local file_exists = function(path)
+					local f = io.open(path, 'r')
+					return f ~= nil and io.close(f)
+			end
+			
+			local create_json_data = function(dicio_path)
+					if not file_exists(dicio_path) then
+							os.execute("mkdir -p " .. dicio_path:match("(.*/)"))
+							local fp = io.open(dicio_path, 'w+')
+							fp:close()
+					end
+			end
+			
+			local add_new_words = function(add_path)
+					for word in io.open(add_path, 'r'):lines() do
+							table.insert(words, word)
+					end
+			end
+			
+			local function dump(o)
+				if type(o) == 'table' then
+					local s = '{ '
+					for k,v in pairs(o) do
+						if type(k) ~= 'number' then k = '"'..k..'"' end
+						s = s .. '['..k..'] = ' .. dump(v) .. ','
+					end
+					return s .. '} '
+				else
+					return tostring(o)
+				end
+			end
+		
+			-- local path_en = vim.fn.stdpath 'data' .. '/ltex/dictionaries/en.utf-8.add'
+			local path_pt = vim.fn.stdpath 'config' .. '/spell/spellfile.utf-8.add'
+			
+			-- create_json_data(path_en)
+			create_json_data(path_pt)
+			
+			-- add_new_words(path_en)
+			add_new_words(path_pt)
+			
+			lspconfig.ltex.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = { "markdown" },
+				settings = {
+					ltex = {
+						language="pt-BR",
+						dictionary = {
+							-- ['en-US'] = words,
+							['pt-BR'] = words,
+						},
+					},
+					
+				}
+			})
+			lspconfig.marksman.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = { "markdown" },
+			})
+			-- lspconfig.textlsp.setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- })
+			-- [WARN][2024-08-21 19:40:55] ...lsp/handlers.lua:135	"The language server remark_ls triggers a registerCapability handler for workspace/didChangeConfiguration despite dynamicRegistration set to false. Report upstream, this warning is harmless"
+
+			
+			
+			-- lspconfig.remark_ls.setup({
+			-- 	settings = {
+			-- 		remark = {
+			-- 			requireConfig = false
+			-- 		}
+			-- 	},
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- 	-- command = "~/.local/share/nvim/mason/bin/remark-language-server --stdio"
+			-- })
+			-- lspconfig.prettier.setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- })
+			-- lspconfig.markdown_oxide.setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- })
+			-- lspconfig["markdown-toc"].setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- })
+			
+			-- lspconfig.dprint.setup({
+			-- 	capabilities = capabilities,
+			-- 	on_attach = on_attach,
+			-- 	filetypes = { "markdown" },
+			-- })
+			
+			
+			
+
+			-- local snyk_token = os.getenv('SNYK_TOKEN')
+			-- if snyk_token and #snyk_token > 0 then
+			-- 	lspconfig.snyk_ls.setup {
+			-- 		init_options = {
+			-- 			integrationName = 'nvim',
+			-- 			token = snyk_token,
+			-- 			activateSnykCodeQuality = 'true',
+			-- 			trustedFolders = {
+			-- 				uv.os_homedir() .. '/.config',
+			-- 				uv.os_homedir() .. '/.local',
+			-- 				uv.os_homedir() .. '/projects',
+			-- 				uv.os_homedir() .. '/programming',
+			-- 			},
+			-- 		}
+			-- 	}
+			-- end
 
 			-- Java
 			lspconfig.jdtls.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
-				filetypes = { "java" }
+				filetypes = { "java" },
+			})
+			
+			
+			
+			
+			
+			lspconfig.gdscript.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes =  { "gd" },
 			})
 
 			
 			
-			require('sonarlint').setup({
-        server = {
-          cmd = {
-              "sonarlint-language-server", 
-              -- Ensure that sonarlint-language-server uses stdio channel
-              '-stdio',
-              '-analyzers',
-              -- paths to the analyzers you need, using those for python and java in this example
-              -- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
-              -- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarxml.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"), -- docker, k8s, terraform
-							}
-        },
+
+			require("sonarlint").setup({
+				server = {
+					cmd = {
+						"sonarlint-language-server",
+						-- Ensure that sonarlint-language-server uses stdio channel
+						"-stdio",
+						"-analyzers",
+						-- paths to the analyzers you need, using those for python and java in this example
+						-- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
+						-- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
+						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
+						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar"),
+						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
+						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarxml.jar"),
+						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
+						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"), -- docker, k8s, terraform
+					},
+				},
 				filetypes = enable_solar_languages,
 			})
-			
-			
-			
-			
-			
+
 			-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			-- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
 			-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
@@ -279,7 +414,9 @@ return {
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 				group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
 				callback = function()
+					-- print(vim.diagnostic.get_virtual_text(0))
 					vim.diagnostic.open_float(nil, { focus = false })
+					-- vim.lsp.buf.hover()
 				end,
 			})
 		end,
