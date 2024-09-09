@@ -1,5 +1,7 @@
+--------------------------------------------------------------------------------
+-- General Options
+--------------------------------------------------------------------------------
 vim.g.mapleader = " "
-
 -- vim.cmd("set number!")     --  Enable line numbers
 vim.cmd("set relativenumber!") -- Enable relative line numbers
 vim.cmd("set expandtab") --  On pressing tab, insert 4 spaces
@@ -29,6 +31,18 @@ vim.cmd("set t_Co=256") --  256 colors
 -- vim.cmd("set foldmethod=indent") --  Fold based on indentation
 -- vim.cmd("set listchars=eol:↲,tab:»-,trail:~,extends:>,precedes:<,space:·") --  Show special characters
 
+
+
+--------------------------------------------------------------------------------
+-- Configs by languages
+--------------------------------------------------------------------------------
+require("language").options.setup()
+
+
+
+--------------------------------------------------------------------------------
+-- Neovide Configs
+--------------------------------------------------------------------------------
 if vim.g.neovide then
 	vim.o.guifont = "Victor Mono:h18"
 
@@ -57,5 +71,7 @@ if vim.g.neovide then
 	-- vim.g.transparency = 0.8
 	-- vim.g.neovide_background_color = "#0f1117" .. string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
 end
+
+
 
 return {}

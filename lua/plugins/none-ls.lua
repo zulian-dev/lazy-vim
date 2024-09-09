@@ -20,20 +20,15 @@ return {
 				
 				code_actions.gitsigns,
 				
-				-- markdown
-				formatting.markdownlint,
-				diagnostics.markdownlint.with({
-					filetypes = { "markdown" },
-					extra_args = { 
-						-- "--disable", "MD030"
-					},
-				}),
-				
 				-- diagnostics.eslint.with({
 				-- 	condition = function(utils)
 				-- 		return utils.root_has_file("package.json")
 				-- 	end,
 				-- }),
+				
+				table.unpack(
+					require("language").null_ls.setup(null_ls)
+				),
 			},
 		})
 		vim.keymap.set({ "n" }, "<leader>ca", vim.lsp.buf.code_action, {})

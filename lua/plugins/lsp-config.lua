@@ -117,6 +117,13 @@ return {
 			end
 
 			local lspconfig = require("lspconfig")
+			
+			require("language").lsp.setup(
+				lspconfig, 
+				capabilities, 
+				on_attach
+			)
+			
 			lspconfig.tsserver.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
@@ -190,70 +197,6 @@ return {
 			-- 	filetypes = { "markdown" },
 			-- })
 			
-			
-			local words = {}
-			
-			local file_exists = function(path)
-					local f = io.open(path, 'r')
-					return f ~= nil and io.close(f)
-			end
-			
-			local create_json_data = function(dicio_path)
-					if not file_exists(dicio_path) then
-							os.execute("mkdir -p " .. dicio_path:match("(.*/)"))
-							local fp = io.open(dicio_path, 'w+')
-							fp:close()
-					end
-			end
-			
-			local add_new_words = function(add_path)
-					for word in io.open(add_path, 'r'):lines() do
-							table.insert(words, word)
-					end
-			end
-			
-			local function dump(o)
-				if type(o) == 'table' then
-					local s = '{ '
-					for k,v in pairs(o) do
-						if type(k) ~= 'number' then k = '"'..k..'"' end
-						s = s .. '['..k..'] = ' .. dump(v) .. ','
-					end
-					return s .. '} '
-				else
-					return tostring(o)
-				end
-			end
-		
-			-- local path_en = vim.fn.stdpath 'data' .. '/ltex/dictionaries/en.utf-8.add'
-			local path_pt = vim.fn.stdpath 'config' .. '/spell/spellfile.utf-8.add'
-			
-			-- create_json_data(path_en)
-			create_json_data(path_pt)
-			
-			-- add_new_words(path_en)
-			add_new_words(path_pt)
-			
-			lspconfig.ltex.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "markdown" },
-				settings = {
-					ltex = {
-						language="pt-BR",
-						dictionary = {
-							-- ['en-US'] = words,
-							['pt-BR'] = words,
-						},
-					},
-					
-				}
-			})
-			lspconfig.marksman.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "markdown" },
-			})
 			-- lspconfig.textlsp.setup({
 			-- 	capabilities = capabilities,
 			-- 	on_attach = on_attach,
@@ -332,9 +275,6 @@ return {
 				on_attach = on_attach,
 				filetypes =  { "gd" },
 			})
-
-			
-			
 
 			require("sonarlint").setup({
 				server = {
