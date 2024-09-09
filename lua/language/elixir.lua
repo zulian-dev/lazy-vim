@@ -19,7 +19,7 @@ elixir.plugins = {
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-rust.elixir = function(lspconfig, capabilities, on_attach)
+elixir.lsp = function(lspconfig, capabilities, on_attach)
   lspconfig.elixirls.setup({
     cmd = { vim.fn.expand("$MASON/bin/elixir-ls") },
     capabilities = capabilities,

@@ -14,7 +14,7 @@ local java = {}
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-rust.java = function(lspconfig, capabilities, on_attach)
+java.lsp = function(lspconfig, capabilities, on_attach)
   lspconfig.jdtls.setup({
     capabilities = capabilities,
     on_attach = on_attach,
