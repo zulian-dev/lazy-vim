@@ -1,31 +1,4 @@
-local enable_snyk_languages = {
-	"go",
-	"java",
-	"javascript",
-	"elixir",
-}
-
-local enable_solar_languages = {
-	-- "php",
-	-- "python",
-	"html",
-	"go",
-	"javascript",
-	"java",
-	"json",
-}
-
 return {
-	{
-		"schrieveslaach/sonarlint.nvim",
-		url = "https://gitlab.com/schrieveslaach/sonarlint.nvim",
-		lazy = true,
-		dependencies = {
-			"mfussenegger/nvim-jdtls",
-		},
-		ft = enable_solar_languages,
-	},
-
 	{
 		"williamboman/mason.nvim",
 		lazy = false,
@@ -147,60 +120,17 @@ return {
 				-- 	vim.keymap.set("n", "<leader>fm", "<cmd>lua vim.lsp.buf.format()<CR>", { noremap = true })
 				-- end,
 			})
-			lspconfig.snyk_ls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = enable_snyk_languages,
-			})
+			
 			-- lspconfig.prettier.setup({
 			-- 	capabilities = capabilities,
 			-- 	on_attach = on_attach,
 			-- 	filetypes = { "markdown" },
 			-- })
-
-			-- local snyk_token = os.getenv('SNYK_TOKEN')
-			-- if snyk_token and #snyk_token > 0 then
-			-- 	lspconfig.snyk_ls.setup {
-			-- 		init_options = {
-			-- 			integrationName = 'nvim',
-			-- 			token = snyk_token,
-			-- 			activateSnykCodeQuality = 'true',
-			-- 			trustedFolders = {
-			-- 				uv.os_homedir() .. '/.config',
-			-- 				uv.os_homedir() .. '/.local',
-			-- 				uv.os_homedir() .. '/projects',
-			-- 				uv.os_homedir() .. '/programming',
-			-- 			},
-			-- 		}
-			-- 	}
-			-- end
-
 			
 			lspconfig.gdscript.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
 				filetypes =  { "gd" },
-			})
-
-			require("sonarlint").setup({
-				server = {
-					cmd = {
-						"sonarlint-language-server",
-						-- Ensure that sonarlint-language-server uses stdio channel
-						"-stdio",
-						"-analyzers",
-						-- paths to the analyzers you need, using those for python and java in this example
-						-- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
-						-- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
-						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
-						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar"),
-						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
-						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarxml.jar"),
-						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
-						vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"), -- docker, k8s, terraform
-					},
-				},
-				filetypes = enable_solar_languages,
 			})
 
 			-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
