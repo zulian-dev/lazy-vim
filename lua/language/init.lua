@@ -2,12 +2,14 @@ local markdown = require("language.markdown")
 local golang = require("language.golang")
 local rust = require("language.rust")
 local java = require("language.java")
+local elixir = require("language.elixir")
 
 local languages = {
   markdown,
   golang,
   rust,
-  java
+  java,
+  elixir,
 }
 
 local all_plugins = {}

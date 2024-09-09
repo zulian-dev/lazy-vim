@@ -16,7 +16,6 @@ local enable_solar_languages = {
 }
 
 return {
-	-- { "elixir-editors/vim-elixir" },
 	{
 		"schrieveslaach/sonarlint.nvim",
 		url = "https://gitlab.com/schrieveslaach/sonarlint.nvim",
@@ -139,25 +138,6 @@ return {
 				on_attach = on_attach,
 				filetypes = { "lua" },
 			})
-			-- 	lspconfig.nextls.setup({
-			-- 		capabilities = capabilities,
-			-- 		on_attach = on_attach,
-			-- 		cmd = { "~/.cache/elixir-tools/nextls/bin/nextls" },
-			-- 		filetypes = { "elixir" },
-			-- 	})
-			lspconfig.elixirls.setup({
-				cmd = { vim.fn.expand("$MASON/bin/elixir-ls") },
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "elixir" },
-			})
-			-- lspconfig.elixirls.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	cmd = { "/opt/homebrew/Cellar/elixir-ls/0.21.3/libexec/language_server.sh" },
-			-- 	filetypes = { "elixir" },
-			-- })
-			
 			lspconfig.clojure_lsp.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
@@ -167,71 +147,16 @@ return {
 				-- 	vim.keymap.set("n", "<leader>fm", "<cmd>lua vim.lsp.buf.format()<CR>", { noremap = true })
 				-- end,
 			})
-
 			lspconfig.snyk_ls.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
 				filetypes = enable_snyk_languages,
 			})
-			
-			-- -- markdown
-			-- lspconfig.marksman.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- })
-			
-			-- markdown
-			-- lspconfig.markdownlint.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- })
-			
-			-- lspconfig.textlsp.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- })
-			-- [WARN][2024-08-21 19:40:55] ...lsp/handlers.lua:135	"The language server remark_ls triggers a registerCapability handler for workspace/didChangeConfiguration despite dynamicRegistration set to false. Report upstream, this warning is harmless"
-
-			
-			
-			-- lspconfig.remark_ls.setup({
-			-- 	settings = {
-			-- 		remark = {
-			-- 			requireConfig = false
-			-- 		}
-			-- 	},
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- 	-- command = "~/.local/share/nvim/mason/bin/remark-language-server --stdio"
-			-- })
 			-- lspconfig.prettier.setup({
 			-- 	capabilities = capabilities,
 			-- 	on_attach = on_attach,
 			-- 	filetypes = { "markdown" },
 			-- })
-			-- lspconfig.markdown_oxide.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- })
-			-- lspconfig["markdown-toc"].setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- })
-			
-			-- lspconfig.dprint.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- })
-			
-			
-			
 
 			-- local snyk_token = os.getenv('SNYK_TOKEN')
 			-- if snyk_token and #snyk_token > 0 then

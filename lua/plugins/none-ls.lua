@@ -14,9 +14,6 @@ return {
 				-- Git
 				code_actions.gitsigns,
 				
-				-- Elixir	
-				diagnostics.credo,
-				
 				-- diagnostics.eslint.with({
 				-- 	condition = function(utils)
 				-- 		return utils.root_has_file("package.json")
