@@ -157,11 +157,7 @@ return {
 			-- 	cmd = { "/opt/homebrew/Cellar/elixir-ls/0.21.3/libexec/language_server.sh" },
 			-- 	filetypes = { "elixir" },
 			-- })
-			lspconfig.rust_analyzer.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "rust" },
-			})
+			
 			lspconfig.clojure_lsp.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
