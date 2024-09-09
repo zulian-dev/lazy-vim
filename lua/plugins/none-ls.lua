@@ -10,15 +10,12 @@ return {
 			sources = {
 				-- Lua
 				formatting.stylua,
-
-				-- Elixir
-				diagnostics.credo,
-
-				-- Go
-				-- formatting.gofmt,
-				diagnostics.staticcheck,
 				
+				-- Git
 				code_actions.gitsigns,
+				
+				-- Elixir	
+				diagnostics.credo,
 				
 				-- diagnostics.eslint.with({
 				-- 	condition = function(utils)

@@ -1,7 +1,9 @@
 local markdown = require("language.markdown")
+local golang = require("language.golang")
 
 local languages = {
   markdown,
+  golang,
 }
 
 local all_plugins = {}

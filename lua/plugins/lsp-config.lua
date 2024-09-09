@@ -157,11 +157,6 @@ return {
 			-- 	cmd = { "/opt/homebrew/Cellar/elixir-ls/0.21.3/libexec/language_server.sh" },
 			-- 	filetypes = { "elixir" },
 			-- })
-			lspconfig.gopls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "go" },
-			})
 			lspconfig.rust_analyzer.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
