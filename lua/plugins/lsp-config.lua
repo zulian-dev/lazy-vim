@@ -80,6 +80,7 @@ return {
 				-- vim.keymap.set("n", "gtd", vim.lsp.buf.type_definition, bufopts)
 				-- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
 				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
+				vim.keymap.set("n", "<RightMouse>", vim.lsp.buf.code_action, bufopts)
 				-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, bufopts)
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
 				vim.keymap.set("n", "<leader>lr", ":Telescope lsp_references", bufopts)
@@ -190,9 +191,9 @@ return {
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 				group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
 				callback = function()
-					-- print(vim.diagnostic.get_virtual_text(0))
-					vim.diagnostic.open_float(nil, { focus = false })
-					-- vim.lsp.buf.hover()
+					if (vim.fn.mode() == "n") then
+						vim.diagnostic.open_float(nil, { focus = false })
+					end
 				end,
 			})
 		end,
