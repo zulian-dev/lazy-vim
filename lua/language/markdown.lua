@@ -1,7 +1,17 @@
 local markdown = {}
 
-
-
+--------------------------------------------------------------------------------
+-- Search for local dictionary -------------------------------------------------
+--------------------------------------------------------------------------------
+local function search_dictionary()
+  print('------------->>>>> Buscando Dicionarios em: ')
+  
+  -- if vim.fn.filereadable(path) == 1 then
+  --   return path
+  -- end
+  -- return nil
+end
+search_dictionary()
 --------------------------------------------------------------------------------
 -- Create custom dictionary for ltex language server ---------------------------
 --------------------------------------------------------------------------------
@@ -141,14 +151,20 @@ markdown.lsp = function(lspconfig, capabilities, on_attach)
     filetypes = { "markdown" },
   })
   -- For spell checking
+  -- https://valentjn.github.io/ltex/settings.html
   lspconfig.ltex.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     filetypes = { "markdown" },
     settings = {
       ltex = {
+        logLevel = "finest",
         checkFrequency = "save",
         language="pt-BR",
+        additionalRules = {
+          enablePickyRules = true,
+          motherTongue = "pt-BR",
+        },
         dictionary = create_dictionary(),
       },
     }
