@@ -147,6 +147,7 @@ markdown.lsp = function(lspconfig, capabilities, on_attach)
     filetypes = { "markdown" },
     settings = {
       ltex = {
+        checkFrequency = "save",
         language="pt-BR",
         dictionary = create_dictionary(),
       },
