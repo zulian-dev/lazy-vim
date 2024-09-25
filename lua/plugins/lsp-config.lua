@@ -18,25 +18,27 @@ return {
 	{
 		"williamboman/mason-lspconfig.nvim",
 		lazy = false,
-		ensure_installed = {
-			"lua_ls",
-			"elixirls",
-			"gopls",
-			"rust_analyzer",
-			"clojure_lsp",
-
-			-- Javascript
-			"typescript-language-server",
-			"html",
-
-			-- JAVA
-			"jdtls",
-			"sonarlint-language-server",
-		},
+		ensure_installed = require("language").mason.setup(),
 		opts = {
 			auto_install = true,
 		},
 	},
+	-- {
+	-- 	"WhoIsSethDaniel/mason-tool-installer.nvim",
+	-- 	lazy = false,
+	-- 	setup = function()
+	-- 		require("mason-tool-installer").setup({
+	-- 			ensure_installed = require("language").mason.setup(),
+	-- 			auto_update = false,
+	-- 			run_on_start = true,
+	-- 			start_delay = 3000, -- 3 second delay
+	-- 			debounce_hours = 20, -- at least 5 hours between attempts to install/update
+	-- 			integrations = {
+	-- 				['mason-lspconfig'] = true,
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"neovim/nvim-lspconfig",
 		lazy = false,
@@ -58,7 +60,7 @@ return {
 						vim.lsp.buf.format({ async = false })
 					end,
 				})
-				-- end
+				-- end -- if client.supports_method("textDocument/formatting") 
 
 				-- Enable completion triggered by <c-x><c-o>
 				-- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -66,17 +68,22 @@ return {
 				-- Mappings.
 				-- See `:help vim.lsp.*` for documentation on any of the below functions
 				local bufopts = { noremap = true, silent = true, buffer = bufnr }
+				
 				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 				vim.keymap.set("n", "gK", vim.lsp.buf.hover, bufopts)
+				
+				-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+				-- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+				-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
+				-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
+				-- vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format, {})
 				-- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
 				-- vim.keymap.set("n", "gS", vim.lsp.buf.signature_help, bufopts)
 				-- vim.keymap.set("n", "rn", vim.lsp.buf.rename, bufopts)
 				-- vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
 				-- vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-				-- vim.keymap.set("n", "<space>wl", function()
-				-- 	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-				-- end, bufopts)
+				-- vim.keymap.set("n", "<space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts)
 				-- vim.keymap.set("n", "gtd", vim.lsp.buf.type_definition, bufopts)
 				-- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
 				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
@@ -97,49 +104,6 @@ return {
 				on_attach
 			)
 			
-			lspconfig.tsserver.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-			})
-			lspconfig.html.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "html" },
-			})
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "lua" },
-			})
-			lspconfig.clojure_lsp.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				--filetypes = { "clojure", "clojurescript" },
-				cmd = { "/opt/homebrew/bin/clojure-lsp" },
-				-- on_attach = function(client, bufnr)
-				-- 	vim.keymap.set("n", "<leader>fm", "<cmd>lua vim.lsp.buf.format()<CR>", { noremap = true })
-				-- end,
-			})
-			
-			-- lspconfig.prettier.setup({
-			-- 	capabilities = capabilities,
-			-- 	on_attach = on_attach,
-			-- 	filetypes = { "markdown" },
-			-- })
-			
-			lspconfig.gdscript.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes =  { "gd" },
-			})
-
-			-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-			-- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
-			-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-			-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
-			-- vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format, {})
-
 			-- Editor settings for LSP custom signs
 			local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
 			for type, icon in pairs(signs) do

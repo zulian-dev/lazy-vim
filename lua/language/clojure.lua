@@ -1,29 +1,21 @@
-local rust = {}
-
-
+local clojure = {}
 
 --------------------------------------------------------------------------------
 -- Mason -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
-rust.mason = {
-  "rust_analyzer",
-}
-
-
+-- clojure.mason = {
+--   "clojure_lsp",
+-- }
 
 --------------------------------------------------------------------------------
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
+-- clojure.lsp = function(lspconfig, capabilities, on_attach)
+--   lspconfig.clojure_lsp.setup({
+--     capabilities = capabilities,
+--     on_attach = on_attach,
+--     filetypes = { "clojure" },
+--   })
+-- end
 
-rust.lsp = function(lspconfig, capabilities, on_attach)
-  lspconfig.rust_analyzer.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    filetypes = { "rust" },
-  })
-end
-
-
-
-return rust
+return clojure

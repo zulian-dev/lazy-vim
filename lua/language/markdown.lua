@@ -1,5 +1,7 @@
 local markdown = {}
 
+
+
 --------------------------------------------------------------------------------
 -- Search for local dictionary -------------------------------------------------
 --------------------------------------------------------------------------------
@@ -140,6 +142,18 @@ markdown.plugins = {
 
 
 --------------------------------------------------------------------------------
+-- Mason -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+markdown.mason = {
+  "marksman",
+  "ltex",
+  "markdownlint",
+}
+
+
+
+--------------------------------------------------------------------------------
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
@@ -150,6 +164,23 @@ markdown.lsp = function(lspconfig, capabilities, on_attach)
     on_attach = on_attach,
     filetypes = { "markdown" },
   })
+  
+  -- from:  `npm i -g vscode-langservers-extracted`
+  -- vim.lsp.start({
+  --   name = 'vscode-markdown-language-server',
+  --   cmd = { 'vscode-markdown-language-server', '--stdio' },
+  --   init_options = {
+  --     provideFormatter = true,
+  --   },
+  --   settings = {
+  --     markdown = {
+  --       validate = {
+  --         enabled = true,
+  --       },
+  --     },
+  --   },
+  -- })
+  
   -- For spell checking
   -- https://valentjn.github.io/ltex/settings.html
   lspconfig.ltex.setup({
@@ -209,5 +240,6 @@ markdown.options = function()
   })
 end
 
-return markdown
 
+
+return markdown

@@ -39,6 +39,17 @@ security.plugins = {
 
 
 --------------------------------------------------------------------------------
+-- Mason -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+security.mason = {
+  "snyk_ls",
+  -- "sonarlint-language-server",
+}
+
+
+
+--------------------------------------------------------------------------------
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
@@ -49,8 +60,6 @@ security.lsp = function(lspconfig, capabilities, on_attach)
     filetypes = enable_snyk_languages,
   })
   
-
-
   -- local sonarlintAnalisers = {}
   
   -- if sonarlintAnalisers["java"] then
@@ -59,6 +68,7 @@ security.lsp = function(lspconfig, capabilities, on_attach)
   --     vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar")
   --   )
   -- end
+  
   require("sonarlint").setup({
     server = {
       cmd = {
@@ -90,37 +100,7 @@ security.lsp = function(lspconfig, capabilities, on_attach)
     },
     filetypes = enable_solar_languages,
   })
-
 end
-
-
-
---------------------------------------------------------------------------------
--- Null LS ---------------------------------------------------------------------
---------------------------------------------------------------------------------
-
--- exampleLang.null_ls = function(null_ls)
---   return {
---     null_ls.builtins.formatting.exampleLangFormatter,
---     null_ls.builtins.diagnostics.exampleLangLint,
---     null_ls.builtins.code_actions.exampleLangCodeActions,
---   }
--- end
-
-
-
---------------------------------------------------------------------------------
--- Options ---------------------------------------------------------------------
---------------------------------------------------------------------------------
-
--- markdown.options = function()
---   vim.api.nvim_create_autocmd("FileType", {
---     pattern = {"exampleLang"},
---     callback = function()
---       vim.cmd([[ set exampleLang=exampleLang ]])
---     end
---   })
--- end
 
 
 
