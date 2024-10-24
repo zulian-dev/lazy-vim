@@ -9,18 +9,31 @@ local gdscript = require("language.gdscript")
 local clojure = require("language.clojure")
 local security = require("language.security")
 
-local languages = {
-  markdown,
-  golang,
-  rust,
-  java,
-  elixir,
-  javascript,
-  lualang,
-  clojure,
-  gdscript,
-  security,
-}
+-- local nvimlang = vim.fn.getenv("NVIMLANG")
+local nvimlang = os.getenv("NVIMLANG")
+
+local languages = {}
+if nvimlang ~= nil then
+  print("Loading language: " .. nvimlang)
+  local lang = require("language." .. nvimlang)
+  languages = {
+    lang,
+  }
+else
+  print("Loading all languages")
+  languages = {
+    markdown,
+    golang,
+    rust,
+    java,
+    elixir,
+    javascript,
+    lualang,
+    clojure,
+    gdscript,
+    security,
+  }
+end
 
 local all_plugins = {}
 local all_lsp = {}
@@ -32,25 +45,23 @@ for _, lang in ipairs(languages) do
   if lang.plugins then
     table.insert(all_plugins, lang.plugins)
   end
-  
+
   if lang.lsp then
     table.insert(all_lsp, lang.lsp)
   end
-  
+
   if lang.null_ls then
     table.insert(all_null_ls, lang.null_ls)
   end
-  
+
   if lang.options then
     table.insert(all_options, lang.options)
   end
-  
+
   if lang.mason then
     table.insert(all_mason, lang.mason)
   end
 end
-
-
 
 local plugins = {
   setup = function()
@@ -61,27 +72,27 @@ local plugins = {
       end
     end
     return return_plugins
-  end
-} 
+  end,
+}
 
 local lsp = {
   setup = function(lspconfig, capabilities, on_attach)
     for _, lang in ipairs(all_lsp) do
       lang(lspconfig, capabilities, on_attach)
     end
-  end
+  end,
 }
 
 local null_ls = {
-  setup = function(null_ls)
+  setup = function(null_ls, formatting, diagnostics, completion, hover)
     local return_null_ls = {}
     for _, lang in ipairs(all_null_ls) do
-      for _, null_ls_plugin in ipairs(lang(null_ls)) do
+      for _, null_ls_plugin in ipairs(lang(null_ls, formatting, diagnostics, completion, hover)) do
         table.insert(return_null_ls, null_ls_plugin)
       end
     end
     return return_null_ls
-  end
+  end,
 }
 
 local options = {
@@ -89,11 +100,11 @@ local options = {
     for _, lang in ipairs(all_options) do
       lang()
     end
-  end
+  end,
 }
 
 local mason = {
-  setup = function()  
+  setup = function()
     local return_mason = {}
     for _, lang in ipairs(all_mason) do
       for _, mason_plugin in ipairs(lang) do
@@ -101,10 +112,10 @@ local mason = {
       end
     end
     return return_mason
-  end
+  end,
 }
 
-local M = {  
+local M = {
   options = options,
   lsp = lsp,
   null_ls = null_ls,

@@ -12,7 +12,6 @@ return {
 					},
 				},
 			})
-	
 		end,
 	},
 	{
@@ -60,7 +59,7 @@ return {
 						vim.lsp.buf.format({ async = false })
 					end,
 				})
-				-- end -- if client.supports_method("textDocument/formatting") 
+				-- end -- if client.supports_method("textDocument/formatting")
 
 				-- Enable completion triggered by <c-x><c-o>
 				-- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -68,11 +67,11 @@ return {
 				-- Mappings.
 				-- See `:help vim.lsp.*` for documentation on any of the below functions
 				local bufopts = { noremap = true, silent = true, buffer = bufnr }
-				
+
 				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 				vim.keymap.set("n", "gK", vim.lsp.buf.hover, bufopts)
-				
+
 				-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 				-- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
 				-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
@@ -97,13 +96,9 @@ return {
 			end
 
 			local lspconfig = require("lspconfig")
-			
-			require("language").lsp.setup(
-				lspconfig, 
-				capabilities, 
-				on_attach
-			)
-			
+
+			require("language").lsp.setup(lspconfig, capabilities, on_attach)
+
 			-- Editor settings for LSP custom signs
 			local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
 			for type, icon in pairs(signs) do
@@ -155,7 +150,7 @@ return {
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 				group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
 				callback = function()
-					if (vim.fn.mode() == "n") then
+					if vim.fn.mode() == "n" then
 						vim.diagnostic.open_float(nil, { focus = false })
 					end
 				end,

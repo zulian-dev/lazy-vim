@@ -1,29 +1,23 @@
 local rust = {}
 
-
-
 --------------------------------------------------------------------------------
 -- Mason -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
 rust.mason = {
-  "rust_analyzer",
+	"rust_analyzer",
 }
-
-
 
 --------------------------------------------------------------------------------
 -- LSP -------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
 rust.lsp = function(lspconfig, capabilities, on_attach)
-  lspconfig.rust_analyzer.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    filetypes = { "rust" },
-  })
+	lspconfig.rust_analyzer.setup({
+		capabilities = capabilities,
+		on_attach = on_attach,
+		filetypes = { "rust" },
+	})
 end
-
-
 
 return rust

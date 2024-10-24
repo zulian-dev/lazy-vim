@@ -6,7 +6,7 @@ local gdscript = {}
 -- gdscript.plugins = {
 --   {
 --     "habamax/vim-godot",
---     dependencies = { 
+--     dependencies = {
 --       'neovim/nvim-lspconfig',
 --       'hrsh7th/cmp-nvim-lsp',
 --       'hrsh7th/cmp-buffer',
@@ -48,6 +48,5 @@ local gdscript = {}
 --   vim.api.nvim_set_keymap("n", "<F6>", ":GodotRunCurrent<CR>", { noremap = true })
 --   vim.api.nvim_set_keymap("n", "<F7>", ":GodotRunFZF<CR>", { noremap = true })
 -- end
-
 
 return gdscript

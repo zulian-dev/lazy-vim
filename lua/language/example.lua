@@ -1,6 +1,8 @@
 local exampleLang = {}
 
-
+-- exampleLang.name = "exampleLang"
+-- exampleLang.filetypes = { "example" }
+-- exampleLang.fileExts = { "exa", "exp" }
 
 --------------------------------------------------------------------------------
 -- Plugins ---------------------------------------------------------------------
@@ -16,8 +18,6 @@ local exampleLang = {}
 --   },
 -- }
 
-
-
 --------------------------------------------------------------------------------
 -- Mason -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -28,8 +28,6 @@ local exampleLang = {}
 --   "exampleLangLint",
 --   "exampleLangCodeActions",
 -- }
-
-
 
 --------------------------------------------------------------------------------
 -- LSP -------------------------------------------------------------------------
@@ -43,21 +41,17 @@ local exampleLang = {}
 --   })
 -- end
 
-
-
 --------------------------------------------------------------------------------
 -- Null LS ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
--- exampleLang.null_ls = function(null_ls)
+-- exampleLang.null_ls = function(null_ls, formatting, diagnostics, completion, hover)
 --   return {
 --     null_ls.builtins.formatting.exampleLangFormatter,
 --     null_ls.builtins.diagnostics.exampleLangLint,
 --     null_ls.builtins.code_actions.exampleLangCodeActions,
 --   }
 -- end
-
-
 
 --------------------------------------------------------------------------------
 -- Options ---------------------------------------------------------------------
@@ -71,7 +65,5 @@ local exampleLang = {}
 --     end
 --   })
 -- end
-
-
 
 return exampleLang

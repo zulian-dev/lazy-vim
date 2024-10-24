@@ -5,10 +5,10 @@ return {
   config = function()
     require("nvim-treesitter.configs").setup({
       auto_install = true,
-      --ensure_installed = { "lua", "elixir", "heex", "javascript", "html" },
+      ensure_installed = { "lua", "elixir", "heex", "eex", "javascript", "html" },
       sync_install = false,
       highlight = { enable = true },
-      indent = { enable = true }
+      indent = { enable = true },
     })
-  end
+  end,
 }
