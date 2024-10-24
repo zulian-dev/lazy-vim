@@ -9,7 +9,12 @@ local gdscript = require("language.gdscript")
 local clojure = require("language.clojure")
 local security = require("language.security")
 
--- local nvimlang = vim.fn.getenv("NVIMLANG")
+-- alias govim="export NVIMLANG='golang' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias mdvim="export NVIMLANG='markdown' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias jsvim="export NVIMLANG='javascript' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias exvim="export NVIMLANG='elixir' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias nvim="unset NVIMLANG && /opt/homebrew/bin/nvim"
+
 local nvimlang = os.getenv("NVIMLANG")
 
 local languages = {}

@@ -11,7 +11,7 @@ local function search_dictionary()
 	-- end
 	-- return nil
 end
-search_dictionary()
+-- search_dictionary()
 --------------------------------------------------------------------------------
 -- Create custom dictionary for ltex language server ---------------------------
 --------------------------------------------------------------------------------
