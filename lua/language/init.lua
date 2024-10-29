@@ -1,42 +1,34 @@
-local markdown = require("language.markdown")
-local golang = require("language.golang")
-local rust = require("language.rust")
-local java = require("language.java")
-local elixir = require("language.elixir")
-local lualang = require("language.lua")
-local javascript = require("language.javascript")
-local gdscript = require("language.gdscript")
-local clojure = require("language.clojure")
-local security = require("language.security")
-
--- alias govim="export NVIMLANG='golang' && /opt/homebrew/bin/nvim && unset NVIMLANG"
 -- alias mdvim="export NVIMLANG='markdown' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias govim="export NVIMLANG='golang' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias rsvim="export NVIMLANG='rust' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias javim="export NVIMLANG='java' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias elvim="export NVIMLANG='elixir' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias luavim="export NVIMLANG='lua' && /opt/homebrew/bin/nvim && unset NVIMLANG"
 -- alias jsvim="export NVIMLANG='javascript' && /opt/homebrew/bin/nvim && unset NVIMLANG"
--- alias exvim="export NVIMLANG='elixir' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias gdvim="export NVIMLANG='gdscript' && /opt/homebrew/bin/nvim && unset NVIMLANG"
+-- alias cljvim="export NVIMLANG='clojure' && /opt/homebrew/bin/nvim && unset NVIMLANG"
 -- alias nvim="unset NVIMLANG && /opt/homebrew/bin/nvim"
 
 local nvimlang = os.getenv("NVIMLANG")
 
 local languages = {}
+
 if nvimlang ~= nil then
   print("Loading language: " .. nvimlang)
-  local lang = require("language." .. nvimlang)
-  languages = {
-    lang,
-  }
+  languages = { require("language." .. nvimlang) }
 else
   print("Loading all languages")
   languages = {
-    markdown,
-    golang,
-    rust,
-    java,
-    elixir,
-    javascript,
-    lualang,
-    clojure,
-    gdscript,
-    security,
+    require("language.markdown"),
+    require("language.golang"),
+    require("language.rust"),
+    require("language.java"),
+    require("language.elixir"),
+    require("language.lua"),
+    require("language.javascript"),
+    require("language.gdscript"),
+    require("language.clojure"),
+    require("language.security"),
   }
 end
 
