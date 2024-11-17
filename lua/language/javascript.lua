@@ -32,6 +32,7 @@ javascript.plugins = {
 	},
 	{
 		"pmizio/typescript-tools.nvim",
+		enabled = false,
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		opts = {},
 		settings = {
@@ -102,14 +103,6 @@ javascript.mason = {
 --------------------------------------------------------------------------------
 
 javascript.lsp = function(lspconfig, capabilities, on_attach)
-	-- from:  `npm i -g vscode-langservers-extracted`
-	lspconfig.eslint.setup({
-		filetypes = javascript_filetypes,
-		capabilities = capabilities,
-		on_attach = on_attach,
-		cmd = { "vscode-eslint-language-server", "--stdio" },
-	})
-
 	lspconfig.emmet_language_server.setup({
 		filetypes = {
 			"css",
@@ -134,6 +127,21 @@ javascript.lsp = function(lspconfig, capabilities, on_attach)
 		filetypes = typescript_filetypes,
 		--filetypes = javascript_filetypes,
 		cmd = { vim.fn.expand("$MASON/bin/typescript-language-server"), "--stdio" },
+		--  init_options = {
+		--  	typescript = {
+		--  		format = {
+		--  			enable = false,
+		--  		},
+		--  	},
+		--  },
+	})
+
+	-- from:  `npm i -g vscode-langservers-extracted`
+	lspconfig.eslint.setup({
+		filetypes = javascript_filetypes,
+		capabilities = capabilities,
+		on_attach = on_attach,
+		cmd = { "vscode-eslint-language-server", "--stdio" },
 	})
 
 	lspconfig.html.setup({
