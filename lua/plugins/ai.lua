@@ -1,6 +1,41 @@
 return {
   {
+    "codota/tabnine-nvim",
+    enabled = false,
+    build = "./dl_binaries.sh",
+    config = function()
+      require("tabnine").setup({
+        disable_auto_comment = true,
+        accept_keymap = "<C-l>",
+        dismiss_keymap = "<C-]>",
+        debounce_ms = 800,
+        suggestion_color = { gui = "#808080", cterm = 244 },
+        exclude_filetypes = { "TelescopePrompt", "NvimTree" },
+        log_file_path = nil, -- absolute path to Tabnine log file
+        ignore_certificate_errors = false,
+      })
+      require("lualine").setup({
+        tabline = {
+          lualine_a = {},
+          lualine_b = { "branch" },
+          lualine_c = { "filename" },
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = {},
+        },
+        sections = { lualine_c = { "lsp_progress" }, lualine_x = { "tabnine" } },
+      })
+
+      vim.api.nvim_set_keymap("x", "<leader>q", "", { noremap = true, callback = require("tabnine.chat").open })
+      vim.api.nvim_set_keymap("i", "<leader>q", "", { noremap = true, callback = require("tabnine.chat").open })
+      vim.api.nvim_set_keymap("n", "<leader>q", "", { noremap = true, callback = require("tabnine.chat").open })
+    end,
+  },
+  -- tabnine_chat binary not found, did you remember to build it first? `cargo build --release` inside `chat/` directory
+
+  {
     "github/copilot.vim",
+    enabled = true,
     -- 'zbirenbaum/copilot.lua',
     config = function()
       vim.api.nvim_set_keymap("i", "<c-p>", "<Plug>(copilot-panel)", { noremap = true, silent = true })
@@ -40,6 +75,7 @@ return {
   --  },
   {
     "jackMort/ChatGPT.nvim",
+    enabled = false,
     event = "VeryLazy",
     config = function()
       require("chatgpt").setup({
