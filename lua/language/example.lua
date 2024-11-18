@@ -1,8 +1,19 @@
 local exampleLang = {}
 
+--------------------------------------------------------------------------------
+-- Language Presets ------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 -- exampleLang.name = "exampleLang"
 -- exampleLang.filetypes = { "example" }
 -- exampleLang.fileExts = { "exa", "exp" }
+
+-- -- Oprional ascii art language icon, will be used in the welcome screen
+-- exampleLang.asciiart = {
+--   [[      ==   ]],
+--   [[    =====  ]],
+--   [[  %%%====  ]],
+-- }
 
 --------------------------------------------------------------------------------
 -- Plugins ---------------------------------------------------------------------
@@ -45,7 +56,7 @@ local exampleLang = {}
 -- Null LS ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
--- exampleLang.null_ls = function(null_ls, formatting, diagnostics, completion, hover)
+-- exampleLang.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
 --   return {
 --     null_ls.builtins.formatting.exampleLangFormatter,
 --     null_ls.builtins.diagnostics.exampleLangLint,
