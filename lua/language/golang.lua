@@ -25,7 +25,7 @@ end
 -- Null LS ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-golang.null_ls = function(null_ls, formatting, diagnostics, completion, hover)
+golang.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
 	return {
 		-- formatting.gofmt,
 		diagnostics.staticcheck,
