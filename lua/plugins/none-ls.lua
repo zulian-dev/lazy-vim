@@ -13,7 +13,7 @@ return {
 				-- Git
 				code_actions.gitsigns,
 
-				table.unpack(require("language").null_ls.setup(null_ls, formatting, diagnostics, completion, hover)),
+				table.unpack(require("language").null_ls.setup(null_ls, formatting, diagnostics, completion, code_actions, hover)),
 			},
 		})
 		vim.keymap.set({ "n" }, "<leader>ca", vim.lsp.buf.code_action, {})
