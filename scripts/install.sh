@@ -26,13 +26,12 @@ install() {
 
 ###############################################################################
 if [ -f "$profile" ]; then
-  echo "O arquivo $profile já existe."
+	echo "O arquivo $profile já existe."
 else
-  echo "Criando o arquivo $profile..."
-  touch "$profile"
-  echo "Arquivo $profile criado com sucesso."
+	echo "Criando o arquivo $profile..."
+	touch "$profile"
+	echo "Arquivo $profile criado com sucesso."
 fi
-
 
 # Atualizando o macOS e instalando ferramentas básicas
 info "Atualizando o sistema e instalando ferramentas essenciais..."
@@ -73,10 +72,10 @@ git clone $gitConfigs $gitFolder/Configurations
 
 info "Configuração copiadas!"
 
-
 ###############################################################################
 
 install "neovim"
+install "font-hack-nerd-font"
 
 # Cria link simbolicos
 ln -s ~/Documents/git/Configurations/nvim ~/.config/nvim
@@ -99,9 +98,9 @@ install "asdf"
 # Configurando o asdf no shell
 if ! grep -q "asdf.sh" ~/.zshrc; then
 	info "Adicionando asdf ao Zsh..."
-	echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> $profile
-	echo -e "\n. $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash" >> $profile
-	
+	echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >>$profile
+	echo -e "\n. $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash" >>$profile
+
 	source $profile
 fi
 
@@ -120,7 +119,7 @@ if ! grep -q ".nvm" $profile; then
 	echo -e "\n. $(brew --prefix nvm)/etc/bash_completion.d/nvm" >>$profile
 
 	source $profile
-	
+
 	nvm install 18
 fi
 
@@ -129,15 +128,15 @@ fi
 # Instalando o Docker
 info "Instalando o Docker..."
 brew install --cask docker || {
-  error "Erro ao instalar o Docker."
-  exit 1
+	error "Erro ao instalar o Docker."
+	exit 1
 }
 
 # Inicializando o Docker
 info "Iniciando o Docker..."
 open -a Docker || {
-  error "Erro ao iniciar o Docker."
-  exit 1
+	error "Erro ao iniciar o Docker."
+	exit 1
 }
 
 ###############################################################################
