@@ -2,6 +2,11 @@ local javascript = {}
 -- Install script
 -- https://github.com/hrsh7th/vscode-langservers-extracted
 -- npm i -g vscode-langservers-extracted
+local html_filetypes = {
+	"html",
+	"heex",
+	"php",
+}
 
 local javascript_filetypes = {
 	"js",
@@ -29,6 +34,14 @@ local typescript_filetypes = {
 javascript.plugins = {
 	{
 		"ap/vim-css-color",
+	},
+	{
+		"microsoft/vscode-js-debug",
+		build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+	},
+	{
+		"mxsdev/nvim-dap-vscode-js",
+		-- build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
 	},
 	{
 		"pmizio/typescript-tools.nvim",
@@ -86,16 +99,17 @@ javascript.plugins = {
 --------------------------------------------------------------------------------
 
 javascript.mason = {
-	-- "eslint_d",
-	-- "eslint_lsp",
-	"eslint-lsp",
+	-- "eslint-lsp",
 	"prettier",
-	"tsserver",
+	-- "tsserver",
 	"typescript-language-server",
 	"html",
-	"emmet-language-server",
+	-- "emmet-language-server",
 	"emmet_ls",
 	"tailwindcss",
+
+	-- Debbug
+	"js-debug-adapter",
 }
 
 --------------------------------------------------------------------------------
@@ -103,23 +117,28 @@ javascript.mason = {
 --------------------------------------------------------------------------------
 
 javascript.lsp = function(lspconfig, capabilities, on_attach)
-	lspconfig.emmet_language_server.setup({
-		filetypes = {
-			"css",
-			"eruby",
-			"html",
-			"javascript",
-			"javascriptreact",
-			"less",
-			"sass",
-			"scss",
-			"pug",
-			"typescriptreact",
-		},
-		-- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
-		-- **Note:** only the options listed in the table are supported.
-		init_options = {},
+	lspconfig.emmet_ls.setup({
+		on_attach = on_attach,
+		capabilities = capabilities,
+		filetypes = html_filetypes,
 	})
+	-- lspconfig.emmet_language_server.setup({
+	-- 	filetypes = {
+	-- 		"css",
+	-- 		"eruby",
+	-- 		"html",
+	-- 		"javascript",
+	-- 		"javascriptreact",
+	-- 		"less",
+	-- 		"sass",
+	-- 		"scss",
+	-- 		"pug",
+	-- 		"typescriptreact",
+	-- 	},
+	-- 	-- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
+	-- 	-- **Note:** only the options listed in the table are supported.
+	-- 	init_options = {},
+	-- })
 
 	lspconfig.tsserver.setup({
 		capabilities = capabilities,
@@ -147,7 +166,7 @@ javascript.lsp = function(lspconfig, capabilities, on_attach)
 	lspconfig.html.setup({
 		capabilities = capabilities,
 		on_attach = on_attach,
-		filetypes = { "html", "heex" },
+		filetypes = html_filetypes,
 	})
 
 	lspconfig.tailwindcss.setup({
@@ -183,7 +202,7 @@ end
 -- Null LS ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-javascript.null_ls = function(null_ls, formatting, diagnostics, completion, hover)
+javascript.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
 	local dynamic_command_function = function(params)
 		return command_resolver.from_yarn_pnp(params)
 			or command_resolver.from_node_modules(params)
@@ -191,6 +210,12 @@ javascript.null_ls = function(null_ls, formatting, diagnostics, completion, hove
 	end
 
 	return {
+		-- formatting.prettier,
+		-- null_ls.builtins.diagnostics.eslint.with({
+		-- 	dynamic_command = dynamic_command_function,
+		-- }),
+
+		-- formatting.prettier,
 		-- null_ls.builtins.formatting.prettier,
 		-- null_ls.builtins.diagnostics.eslint_d,
 		-- null_ls.builtins.diagnostics.eslint.with({
@@ -205,6 +230,68 @@ javascript.null_ls = function(null_ls, formatting, diagnostics, completion, hove
 		-- null_ls.builtins.code_actions.eslint,
 		-- null_ls.builtins.diagnostics.eslint,
 	}
+end
+
+--------------------------------------------------------------------------------
+--- Debugging ------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+javascript.debugging = function(dap)
+	if not dap.adapters["pwa-node"] then
+		dap.adapters["pwa-node"] = {
+			type = "server",
+			host = "localhost",
+			port = "${port}",
+			executable = {
+				command = "node",
+				-- 💀 Make sure to update this path to point to your installation
+				args = {
+					LazyVim.get_pkg_path("js-debug-adapter", "/js-debug/src/dapDebugServer.js"),
+					"${port}",
+				},
+			},
+		}
+	end
+	if not dap.adapters["node"] then
+		dap.adapters["node"] = function(cb, config)
+			if config.type == "node" then
+				config.type = "pwa-node"
+			end
+			local nativeAdapter = dap.adapters["pwa-node"]
+			if type(nativeAdapter) == "function" then
+				nativeAdapter(cb, config)
+			else
+				cb(nativeAdapter)
+			end
+		end
+	end
+
+	local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+
+	local vscode = require("dap.ext.vscode")
+	vscode.type_to_filetypes["node"] = js_filetypes
+	vscode.type_to_filetypes["pwa-node"] = js_filetypes
+
+	for _, language in ipairs(js_filetypes) do
+		if not dap.configurations[language] then
+			dap.configurations[language] = {
+				{
+					type = "pwa-node",
+					request = "launch",
+					name = "Launch file",
+					program = "${file}",
+					cwd = "${workspaceFolder}",
+				},
+				{
+					type = "pwa-node",
+					request = "attach",
+					name = "Attach",
+					processId = require("dap.utils").pick_process,
+					cwd = "${workspaceFolder}",
+				},
+			}
+		end
+	end
 end
 
 --------------------------------------------------------------------------------

@@ -5,8 +5,8 @@ local lualang = {}
 --------------------------------------------------------------------------------
 
 lualang.mason = {
-	"stylua",
-	"lua_ls",
+  "stylua",
+  "lua_ls",
 }
 
 --------------------------------------------------------------------------------
@@ -14,11 +14,11 @@ lualang.mason = {
 --------------------------------------------------------------------------------
 
 lualang.lsp = function(lspconfig, capabilities, on_attach)
-	lspconfig.lua_ls.setup({
-		capabilities = capabilities,
-		on_attach = on_attach,
-		filetypes = { "lua" },
-	})
+  lspconfig.lua_ls.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+    filetypes = { "lua" },
+  })
 end
 
 --------------------------------------------------------------------------------
@@ -26,9 +26,9 @@ end
 --------------------------------------------------------------------------------
 
 lualang.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
-	return {
-		-- formatting.stylua,
-	}
+  return {
+    -- formatting.stylua,
+  }
 end
 
 return lualang

@@ -192,7 +192,10 @@ markdown.lsp = function(lspconfig, capabilities, on_attach)
         },
         disabledRules = {
           ["pt-BR"] = {
-            --"TOO_LONG_SENTENCE",
+            "TOO_LONG_SENTENCE",
+            "ELLIPSIS",
+            "DASH_RULE",
+            "SMART_QUOTES",
           },
         },
         dictionary = create_dictionary(),

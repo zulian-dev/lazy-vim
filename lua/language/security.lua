@@ -6,11 +6,13 @@ local enable_snyk_languages = {
   "java",
   "javascript",
   "elixir",
+  "php",
+  "python",
 }
 
 local enable_solar_languages = {
-  -- "php",
-  -- "python",
+  "php",
+  "python",
   "html",
   "go",
   "javascript",
@@ -40,7 +42,7 @@ security.plugins = {
 
 security.mason = {
   "snyk_ls",
-  -- "sonarlint-language-server",
+  "sonarlint-language-server",
 }
 
 --------------------------------------------------------------------------------
@@ -75,6 +77,8 @@ security.lsp = function(lspconfig, capabilities, on_attach)
         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarxml.jar"),
         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
+        vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarphp.jar"),
+        vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"), -- docker, k8s, terraform
 
         -- ls ~/.local/share/nvim/mason/share/sonarlint-analyzers/
