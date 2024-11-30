@@ -8,53 +8,43 @@
 -- alias gdvim="export NVIMLANG='gdscript' && /opt/homebrew/bin/nvim && unset NVIMLANG"
 -- alias cljvim="export NVIMLANG='clojure' && /opt/homebrew/bin/nvim && unset NVIMLANG"
 -- alias nvim="unset NVIMLANG && /opt/homebrew/bin/nvim"
-
+local notify = require("config.utils").notify
 local nvimlang = os.getenv("NVIMLANG")
 
-local languages = {}
-
-local function notify(msg)
-  vim.notify(msg, vim.log.levels.INFO, { title = "LazyVim - Language Loader" })
-end
+local loaded_languages = {}
+local disponible_languages = {
+  "markdown",
+  "golang",
+  "rust",
+  "java",
+  "elixir",
+  "lua",
+  "javascript",
+  "gdscript",
+  "clojure",
+  "security",
+  "php",
+  "bash",
+  "python",
+}
 
 if nvimlang then
-  notify("Loading language: " .. nvimlang)
-  languages = nvimlang and { require("language." .. nvimlang) }
+  local langs = vim.split(nvimlang, ",")
+  for _, lang in ipairs(langs) do
+    notify.info("Language Loader", "Loading language: " .. lang)
+    table.insert(loaded_languages, require("language." .. lang))
+  end
 else
-  notify("Loading all languages")
-  languages = {
-    require("language.markdown"),
-    require("language.golang"),
-    require("language.rust"),
-    require("language.java"),
-    require("language.elixir"),
-    require("language.lua"),
-    require("language.javascript"),
-    require("language.gdscript"),
-    require("language.clojure"),
-    require("language.security"),
-  }
+  notify.info("Language Loader", "Loading all languages")
+  for _, lang in ipairs(disponible_languages) do
+    table.insert(loaded_languages, require("language." .. lang))
+  end
 end
 
--- Carrega uma linguagem específica ou todas, se NVIMLANG não estiver definido
--- local languages = nvimlang and { require("language." .. nvimlang) }
---     or {
---       require("language.markdown"),
---       require("language.golang"),
---       require("language.rust"),
---       require("language.java"),
---       require("language.elixir"),
---       require("language.lua"),
---       require("language.javascript"),
---       require("language.gdscript"),
---       require("language.clojure"),
---       require("language.security"),
---     }
---
 -- Função auxiliar para coletar dados de um campo específico em todas as linguagens
 local function collect_field(field)
   local result = {}
-  for _, lang in ipairs(languages) do
+  for _, lang in ipairs(loaded_languages) do
     if lang[field] then
       if type(lang[field]) == "table" then
         vim.list_extend(result, lang[field])
@@ -68,14 +58,14 @@ end
 
 -- Função auxiliar para executar funções de configuração de linguagens
 local function execute_setup(field, ...)
-  for _, lang in ipairs(languages) do
+  for _, lang in ipairs(loaded_languages) do
     if lang[field] then
       lang[field](...)
     end
   end
 end
 
-local M = {
+return {
   plugins = {
     setup = function()
       return collect_field("plugins")
@@ -92,9 +82,18 @@ local M = {
     setup = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
       local return_null_ls = {}
       for _, plugin in ipairs(collect_field("null_ls")) do
-        vim.list_extend(return_null_ls, plugin(null_ls, formatting, diagnostics, completion, code_actions, hover))
+        vim.list_extend(
+          return_null_ls,
+          plugin(null_ls, formatting, diagnostics, completion, code_actions, hover)
+        )
       end
       return return_null_ls
+    end,
+  },
+
+  debugging = {
+    setup = function(dap)
+      execute_setup("debugging", dap)
     end,
   },
 
@@ -120,5 +119,3 @@ local M = {
     end,
   },
 }
-
-return M
