@@ -59,7 +59,7 @@ info $gitConfigs
 mkdir -p $gitFolder
 
 # Baixa as configurações
-git clone $gitConfigs
+git clone $gitConfigs $gitFolder/Configurations
 
 info "Configuração copiadas!"
 
@@ -110,7 +110,25 @@ if ! grep -q ".nvm" $profile; then
 	echo -e "\n. $(brew --prefix nvm)/etc/bash_completion.d/nvm" >>$profile
 
 	source $profile
+	
+	nvm install 18
 fi
+
+###############################################################################
+
+# Instalando o Docker
+info "Instalando o Docker..."
+brew install --cask docker || {
+  error "Erro ao instalar o Docker."
+  exit 1
+}
+
+# Inicializando o Docker
+info "Iniciando o Docker..."
+open -a Docker || {
+  error "Erro ao iniciar o Docker."
+  exit 1
+}
 
 ###############################################################################
 
