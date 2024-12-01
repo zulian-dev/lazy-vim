@@ -24,6 +24,16 @@ install() {
 	}
 }
 
+###############################################################################
+if [ -f "$profile" ]; then
+  echo "O arquivo $profile já existe."
+else
+  echo "Criando o arquivo $profile..."
+  touch "$profile"
+  echo "Arquivo $profile criado com sucesso."
+fi
+
+
 # Atualizando o macOS e instalando ferramentas básicas
 info "Atualizando o sistema e instalando ferramentas essenciais..."
 sudo softwareupdate --install --all
