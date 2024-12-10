@@ -1,6 +1,6 @@
 #!/bin/bash
 
-profile="~/.zshrc"
+profile="/Users/kovi/.zprofile"
 
 gitFolder="~/Documents/git/"
 
@@ -19,6 +19,15 @@ install() {
 	tool=$1
 	info "Instalando $1..."
 	brew install $1 || {
+		error "Erro ao instalar $1."
+		exit 1
+	}
+}
+
+install-cask() {
+	tool=$1
+	info "Instalando $1..."
+	brew install --cask $1 || {
 		error "Erro ao instalar $1."
 		exit 1
 	}
@@ -57,7 +66,13 @@ brew update
 ###############################################################################
 
 install "curl"
+install "wget"
+install "dialog"
 install "git"
+install "ripgrep" # Usado no nvim (Telescope live grep)
+
+# git config --global user.name "Your Name"
+# git config --global user.email you@example.com
 
 ###############################################################################
 
@@ -84,10 +99,14 @@ ln -s ~/Documents/git/Configurations/nvim ~/.config/nvim
 
 # Instalando o terminal Kitty
 info "Instalando o terminal Kitty..."
-brew install --cask kitty || {
-	error "Erro ao instalar o terminal Kitty."
-	exit 1
-}
+install-cask kitty
+
+# oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
 ###############################################################################
 
@@ -100,6 +119,18 @@ if ! grep -q "asdf.sh" ~/.zshrc; then
 	info "Adicionando asdf ao Zsh..."
 	echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >>$profile
 	echo -e "\n. $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash" >>$profile
+
+	source $profile
+
+	# Erlang
+	asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
+	asdf install erlang latest
+	asdf global erlang latest
+
+	# Elixir
+	asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+	asdf install elixir latest
+	asdf global elixir latest
 
 	source $profile
 fi
@@ -125,12 +156,15 @@ fi
 
 ###############################################################################
 
+# Instalando vscodium
+info "Instalando o vscodium..."
+install-cask vscodium
+
+###############################################################################
+
 # Instalando o Docker
 info "Instalando o Docker..."
-brew install --cask docker || {
-	error "Erro ao instalar o Docker."
-	exit 1
-}
+install-cask docker
 
 # Inicializando o Docker
 info "Iniciando o Docker..."
