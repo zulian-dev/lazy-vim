@@ -12,6 +12,10 @@ local function notify(title, level, msg)
 		-- TRACE = vim.log.level.TRACE,
 	}
 
+	if type(msg) == "table" then
+		msg = require("vim.inspect").inspect(msg)
+	end
+
 	vim.notify(msg, levels[level], {
 		title = title,
 	})
