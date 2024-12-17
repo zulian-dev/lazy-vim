@@ -27,7 +27,7 @@ end
 
 lualang.null_ls = function(null_ls, formatting, diagnostics, completion, code_actions, hover)
   return {
-    -- formatting.stylua,
+    formatting.stylua,
   }
 end
 
