@@ -70,6 +70,7 @@ install "wget"
 install "dialog"
 install "git"
 install "ripgrep" # Usado no nvim (Telescope live grep)
+install "fzf"
 
 # git config --global user.name "Your Name"
 # git config --global user.email you@example.com
